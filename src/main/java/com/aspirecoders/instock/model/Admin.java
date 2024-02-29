@@ -7,19 +7,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
 import lombok.Data;
+import jakarta.persistence.PrePersist;
 
-@Data
 @Entity
-public class Customer {
+@Data
+public class Admin {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String customerId;
+    private String adminId;
 
-    private String customerName;
-    private String mobile;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
 
     @Column(columnDefinition = "TIMESTAMP")
     private Date createdAt;
@@ -28,4 +30,5 @@ public class Customer {
     protected void onCreate() {
         createdAt = new Date();
     }
+
 }

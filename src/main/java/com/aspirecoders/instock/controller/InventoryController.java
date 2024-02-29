@@ -30,7 +30,7 @@ public class InventoryController {
     }
 
     @GetMapping("/{id}")
-    public Inventory get(@PathVariable int id) {
+    public Inventory get(@PathVariable long id) {
         return inventoryService.getById(id);
     }
 
@@ -42,16 +42,32 @@ public class InventoryController {
         return new ResponseEntity<>(inv, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @PutMapping("/category/{id}")
+    @PutMapping("/put/{id}")
     public ResponseEntity<Inventory> putMethodName(@PathVariable int id, @RequestBody Inventory entity) {
         return new ResponseEntity<>(inventoryService.editInventory(id, entity), HttpStatus.OK);
     }
 
-    @DeleteMapping("/category/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteMethod(@PathVariable int id) {
         if (inventoryService.deleteById(id)) {
             return ResponseEntity.ok().body("Successfully deleted");
         }
         return ResponseEntity.internalServerError().body("Deletion aborted");
+    }
+
+    @GetMapping("/page/{offset}/{size}")
+    public List<Inventory> getPage(@PathVariable("offset") int offset, @PathVariable("size") int size) {
+        return inventoryService.getPageList(offset, size);
+    }
+
+    @GetMapping("/sort/{field}/{sortBy}")
+    public List<Inventory> sortPage(@PathVariable("field") String field, @PathVariable("sortBy") String sortBy) {
+        return inventoryService.sortPageList(field, sortBy);
+    }
+
+    @GetMapping("/page/{offset}/{size}/{field}/{sortBy}")
+    public List<Inventory> sortPaginate(@PathVariable("offset") int offset, @PathVariable("size") int size,
+            @PathVariable("field") String field, @PathVariable("sortBy") String sortBy) {
+        return inventoryService.sortAndPaginate(offset, size, sortBy, field);
     }
 }
